@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 # Utility script that converts "PNG" and "PDF" files in to a single TIFF file
 # with CCITT Group 4 (T.6) compression
 #
@@ -16,7 +14,9 @@ mkdir ${script_dir}/output
 cp ${script_dir}/input/* ${script_dir}/output
 cd ${script_dir}/output
 
+ret=0
 cnt=0
+
 for f in *.{pdf,PDF}; do
     if [ -f "${f}" ]; then
         echo "converting $f to ${cnt}.pbm"
@@ -48,8 +48,12 @@ if [ ! -z "${TIFF_FILES}" ]; then
     echo "Running command to merge: "
     echo "    tiffcp -c g4 ${TIFF_FILES} receipts.tiff"
     tiffcp -c g4 ${TIFF_FILES} receipts.tiff
+    echo "Conversion done: ${script_dir}/output/receipts.tiff"
+else
+    echo "No TIFF files found"
+    ret=1
 fi
 
-echo "Conversion done: ${script_dir}/output/receipts.tiff"
-
 cd -
+
+exit $ret
