@@ -20,7 +20,7 @@ cnt=0
 for f in *.{pdf,PDF}; do
     if [ -f "${f}" ]; then
         echo "converting $f to ${cnt}.pbm"
-        pdftoppm -mono "${f}" "${cnt}"
+        pdftoppm -r 300 -mono "${f}" "${cnt}"
         let "cnt += 1"
     fi
 done
